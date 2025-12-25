@@ -647,17 +647,22 @@
                 if (isMobileDevice) {
                     setTimeout(() => {
                         letterEl.classList.add('mobile-centered');
-                        // Calculate center position
-                        const letterWidth = window.innerWidth * 0.92;
-                        const letterMaxHeight = window.innerHeight * 0.8;
-                        const letterLeft = (window.innerWidth - letterWidth) / 2;
-                        const letterTop = (window.innerHeight - letterMaxHeight) / 2;
 
+                        // Set width first
+                        const letterWidth = window.innerWidth * 0.92;
                         letterEl.style.width = letterWidth + 'px';
-                        letterEl.style.maxHeight = letterMaxHeight + 'px';
-                        letterEl.style.left = letterLeft + 'px';
-                        letterEl.style.top = letterTop + 'px';
+                        letterEl.style.maxHeight = (window.innerHeight * 0.85) + 'px';
                         letterEl.style.transform = 'none';
+
+                        // Wait for layout, then get actual height and center
+                        requestAnimationFrame(() => {
+                            const actualHeight = letterEl.offsetHeight;
+                            const letterLeft = (window.innerWidth - letterWidth) / 2;
+                            const letterTop = (window.innerHeight - actualHeight) / 2;
+
+                            letterEl.style.left = letterLeft + 'px';
+                            letterEl.style.top = Math.max(10, letterTop) + 'px';
+                        });
                     }, 800);
                 }
 
