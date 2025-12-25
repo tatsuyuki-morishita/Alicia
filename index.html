@@ -193,26 +193,24 @@
         /* Mobile: letter becomes fixed and centered when opened */
         @media (max-width: 768px) {
             .envelope.open .letter {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 90%;
-                max-height: 85vh;
-                max-height: calc(100vh - max(40px, env(safe-area-inset-top)) - max(40px, env(safe-area-inset-bottom)));
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 90vw !important;
+                max-height: 80vh;
                 overflow-y: auto;
                 z-index: 1000;
-                padding-top: 30px;
+                padding: 25px;
+                margin: 0;
             }
         }
 
         @media (max-width: 480px) {
             .envelope.open .letter {
-                width: 94%;
-                max-height: 90vh;
-                max-height: calc(100vh - max(30px, env(safe-area-inset-top)) - max(30px, env(safe-area-inset-bottom)));
-                padding: 18px;
-                padding-top: 25px;
+                width: 92vw !important;
+                max-height: 85vh;
+                padding: 20px;
             }
         }
 
@@ -624,11 +622,11 @@
     <script>
         // Letter content with typewriter effect
         const letterData = {
-            title: "Welcome to Toronto! 🍁",
+            title: "Welcome to Toronto!",
             para1: "Dear friend, I'm so incredibly happy that you're finally coming to visit! Toronto has been waiting for you, and so have I.",
             para2: "I can't wait to show you all my favorite places - from the stunning CN Tower views to the cozy cafés in Kensington Market. We'll explore the diverse neighborhoods, taste amazing food from around the world, and create unforgettable memories together.",
             para3: "This city is beautiful, but it will be even more special with you here. Get ready for an amazing adventure!",
-            signature: "With love and excitement,\nYour friend in Toronto 💕"
+            signature: "With love and excitement,\nYour friend in Toronto"
         };
 
         // Create snowflakes
