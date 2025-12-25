@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Toronto!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Snowfall background */
+        .snowfall {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 200;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -20px;
+            color: white;
+            opacity: 0;
+            animation: fall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Gentle sway animation for snowflakes */
+        .snowflake.sway1 { animation: fall-sway1 linear infinite; }
+        .snowflake.sway2 { animation: fall-sway2 linear infinite; }
+        .snowflake.sway3 { animation: fall-sway3 linear infinite; }
+
+        @keyframes fall-sway1 {
+            0% { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0; }
+            5% { opacity: 0.9; }
+            25% { transform: translateY(25vh) translateX(20px) rotate(90deg); }
+            50% { transform: translateY(50vh) translateX(-10px) rotate(180deg); }
+            75% { transform: translateY(75vh) translateX(15px) rotate(270deg); }
+            95% { opacity: 0.9; }
+            100% { transform: translateY(100vh) translateX(0) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fall-sway2 {
+            0% { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0; }
+            5% { opacity: 0.8; }
+            25% { transform: translateY(25vh) translateX(-15px) rotate(-90deg); }
+            50% { transform: translateY(50vh) translateX(20px) rotate(-180deg); }
+            75% { transform: translateY(75vh) translateX(-5px) rotate(-270deg); }
+            95% { opacity: 0.8; }
+            100% { transform: translateY(100vh) translateX(10px) rotate(-360deg); opacity: 0; }
+        }
+
+        @keyframes fall-sway3 {
+            0% { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0; }
+            5% { opacity: 0.7; }
+            33% { transform: translateY(33vh) translateX(25px) rotate(120deg); }
+            66% { transform: translateY(66vh) translateX(-20px) rotate(240deg); }
+            95% { opacity: 0.7; }
+            100% { transform: translateY(100vh) translateX(5px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Envelope container */
+        .envelope-container {
+            perspective: 1000px;
+            z-index: 10;
+        }
+
+        .envelope {
+            position: relative;
+            width: 500px;
+            height: 350px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #e8d4b8 0%, #d4b896 100%);
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            transition: opacity 0.5s ease-in-out 0.8s;
+        }
+
+        .envelope.open .envelope-back {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(180deg, #d4b896 0%, #c4a882 100%);
+            transform-origin: top center;
+            transition: transform 0.8s ease-in-out, opacity 0.5s ease-in-out 0.8s, z-index 0s 0.4s;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            z-index: 20;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Letter - Harry Potter vintage style */
+        .letter {
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            width: 90%;
+            height: auto;
+            min-height: 300px;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
+                linear-gradient(to bottom, #f4e4bc, #e8d5a3, #f0deb5);
+            border-radius: 3px;
+            padding: 40px;
+            padding-bottom: 50px;
+            transform: translateY(0);
+            transition: transform 0.8s ease-in-out 0.3s, z-index 0s 0.3s;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 80px rgba(139, 90, 43, 0.15);
+            overflow: visible;
+            z-index: 10;
+            border: 1px solid #c4a86b;
+        }
+
+        /* Parchment edge effect */
+        .letter::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at top left, transparent 70%, rgba(139, 90, 43, 0.2)),
+                radial-gradient(ellipse at top right, transparent 70%, rgba(139, 90, 43, 0.2)),
+                radial-gradient(ellipse at bottom left, transparent 70%, rgba(139, 90, 43, 0.2)),
+                radial-gradient(ellipse at bottom right, transparent 70%, rgba(139, 90, 43, 0.2));
+            pointer-events: none;
+            border-radius: 3px;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-50%);
+            z-index: 30;
+        }
+
+        /* Mobile: letter becomes fixed and centered when opened */
+        @media (max-width: 768px) {
+            .envelope.open .letter {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-height: 85vh;
+                max-height: calc(100vh - max(40px, env(safe-area-inset-top)) - max(40px, env(safe-area-inset-bottom)));
+                overflow-y: auto;
+                z-index: 1000;
+                padding-top: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .envelope.open .letter {
+                width: 94%;
+                max-height: 90vh;
+                max-height: calc(100vh - max(30px, env(safe-area-inset-top)) - max(30px, env(safe-area-inset-bottom)));
+                padding: 18px;
+                padding-top: 25px;
+            }
+        }
+
+        .letter-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out 1s;
+            position: relative;
+        }
+
+        .envelope.open .letter-content {
+            opacity: 1;
+        }
+
+        /* Quill pen cursor */
+        .quill {
+            position: absolute;
+            font-size: 38px;
+            pointer-events: none;
+            z-index: 1000;
+            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.4));
+            opacity: 0;
+            transition: left 0.08s ease-out, top 0.08s ease-out;
+        }
+
+        .quill.writing {
+            opacity: 1;
+        }
+
+        /* Ink character animation */
+        .ink-char {
+            display: inline;
+            opacity: 0;
+            animation: ink-appear 0.4s ease-out forwards;
+        }
+
+        @keyframes ink-appear {
+            0% {
+                opacity: 0;
+                filter: blur(2px);
+                transform: scale(0.8);
+            }
+            30% {
+                opacity: 0.7;
+                filter: blur(1px);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+        }
+
+        /* Ink splatter effect for certain characters */
+        .ink-char.heavy {
+            animation: ink-heavy 0.5s ease-out forwards;
+        }
+
+        @keyframes ink-heavy {
+            0% {
+                opacity: 0;
+                filter: blur(3px);
+                transform: scale(0.5);
+            }
+            20% {
+                opacity: 0.5;
+                filter: blur(2px);
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+        }
+
+        .letter h1 {
+            font-family: 'Times New Roman', 'Palatino Linotype', serif;
+            font-size: 32px;
+            color: #2c1810;
+            margin-bottom: 25px;
+            text-align: center;
+            overflow: hidden;
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        .letter p {
+            font-family: 'Times New Roman', 'Palatino Linotype', serif;
+            font-size: 17px;
+            color: #1a0f0a;
+            line-height: 2;
+            margin-bottom: 18px;
+            text-indent: 2em;
+        }
+
+        .letter .signature {
+            text-align: right;
+            font-style: italic;
+            font-family: 'Brush Script MT', 'Segoe Script', cursive;
+            margin-top: 25px;
+            color: #4a1c1c;
+            font-size: 20px;
+        }
+
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            display: inline;
+        }
+
+        .typewriter span {
+            opacity: 0;
+            animation: fadeIn 0.05s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Click hint */
+        .click-hint {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+
+        .envelope.open .click-hint {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Characters walking around */
+        .character {
+            position: fixed;
+            z-index: 100;
+            image-rendering: pixelated;
+        }
+
+        .character-canvas {
+            width: 128px;
+            height: 128px;
+        }
+
+        /* Hearts and sparkles following characters */
+        .trail {
+            position: fixed;
+            pointer-events: none;
+            font-size: 16px;
+            animation: trail-fade 1s forwards;
+            z-index: 99;
+        }
+
+        @keyframes trail-fade {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.5);
+            }
+        }
+
+        /* Decorative borders on letter - vintage style */
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid #8b5a2b;
+            border-radius: 2px;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Corner flourishes */
+        .flourish {
+            position: absolute;
+            font-size: 28px;
+            color: #8b5a2b;
+            opacity: 0.5;
+            font-family: serif;
+        }
+
+        .flourish:nth-child(1) { top: 8px; left: 12px; transform: rotate(0deg); }
+        .flourish:nth-child(2) { top: 8px; right: 12px; transform: rotate(90deg); }
+        .flourish:nth-child(3) { bottom: 8px; left: 12px; transform: rotate(-90deg); }
+        .flourish:nth-child(4) { bottom: 8px; right: 12px; transform: rotate(180deg); }
+
+        /* Wax seal */
+        .wax-seal {
+            position: absolute;
+            bottom: -20px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #c41e3a, #8b0000);
+            border-radius: 50%;
+            box-shadow:
+                inset -3px -3px 8px rgba(0,0,0,0.4),
+                inset 2px 2px 4px rgba(255,255,255,0.2),
+                2px 4px 8px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        /* ========== RESPONSIVE STYLES FOR MOBILE ========== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+
+            .envelope {
+                width: 90vw;
+                max-width: 400px;
+                height: 280px;
+            }
+
+            .letter {
+                padding: 25px;
+                padding-bottom: 40px;
+            }
+
+            .letter h1 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+            .letter p {
+                font-size: 14px;
+                line-height: 1.7;
+                margin-bottom: 12px;
+                text-indent: 1.5em;
+            }
+
+            .letter .signature {
+                font-size: 16px;
+                margin-top: 15px;
+            }
+
+            .letter::before {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+            }
+
+            .flourish {
+                font-size: 20px;
+            }
+
+            .flourish:nth-child(1) { top: 5px; left: 8px; }
+            .flourish:nth-child(2) { top: 5px; right: 8px; }
+            .flourish:nth-child(3) { bottom: 5px; left: 8px; }
+            .flourish:nth-child(4) { bottom: 5px; right: 8px; }
+
+            .wax-seal {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                bottom: -15px;
+                right: 20px;
+            }
+
+            .quill {
+                font-size: 28px;
+            }
+
+            .click-hint {
+                font-size: 12px;
+                bottom: -35px;
+            }
+
+            /* Smaller characters on mobile */
+            .character-canvas {
+                width: 80px;
+                height: 80px;
+            }
+
+            /* Fewer snowflakes for performance */
+            .snowflake:nth-child(n+40) {
+                display: none;
+            }
+
+            .trail {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .envelope {
+                width: 95vw;
+                height: 250px;
+            }
+
+            .letter {
+                padding: 20px;
+                padding-bottom: 35px;
+            }
+
+            .letter h1 {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .letter p {
+                font-size: 12px;
+                line-height: 1.6;
+                margin-bottom: 10px;
+            }
+
+            .letter .signature {
+                font-size: 14px;
+            }
+
+            .flourish {
+                font-size: 16px;
+            }
+
+            .wax-seal {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+                bottom: -12px;
+                right: 15px;
+            }
+
+            .character-canvas {
+                width: 64px;
+                height: 64px;
+            }
+
+            /* Even fewer snowflakes for small screens */
+            .snowflake:nth-child(n+25) {
+                display: none;
+            }
+        }
+
+        /* Handle notch/safe areas on modern phones */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(10px, env(safe-area-inset-left));
+                padding-right: max(10px, env(safe-area-inset-right));
+                padding-bottom: max(10px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Prevent text selection on touch */
+        .envelope, .letter, .character {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Improve touch target */
+        .envelope {
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <div class="snowfall" id="snowfall"></div>
+
+    <div class="envelope-container">
+        <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+            <div class="letter">
+                <span class="flourish">❧</span>
+                <span class="flourish">❧</span>
+                <span class="flourish">❧</span>
+                <span class="flourish">❧</span>
+                <div class="letter-content" id="letterContent">
+                    <h1 id="title"></h1>
+                    <p id="para1"></p>
+                    <p id="para2"></p>
+                    <p id="para3"></p>
+                    <p class="signature" id="signature"></p>
+                </div>
+                <div class="wax-seal">🍁</div>
+                <div class="quill" id="quill">🪶</div>
+            </div>
+            <div class="envelope-flap"></div>
+            <div class="click-hint">Click to open</div>
+        </div>
+    </div>
+
+    <!-- Character 1: Full body pixel character with walk animation -->
+    <canvas id="char1" class="character character-canvas" width="128" height="128"></canvas>
+
+    <!-- Character 2: Full body pixel character with walk animation -->
+    <canvas id="char2" class="character character-canvas" width="128" height="128"></canvas>
+
+    <script>
+        // Letter content with typewriter effect
+        const letterData = {
+            title: "Welcome to Toronto! 🍁",
+            para1: "Dear friend, I'm so incredibly happy that you're finally coming to visit! Toronto has been waiting for you, and so have I.",
+            para2: "I can't wait to show you all my favorite places - from the stunning CN Tower views to the cozy cafés in Kensington Market. We'll explore the diverse neighborhoods, taste amazing food from around the world, and create unforgettable memories together.",
+            para3: "This city is beautiful, but it will be even more special with you here. Get ready for an amazing adventure!",
+            signature: "With love and excitement,\nYour friend in Toronto 💕"
+        };
+
+        // Create snowflakes
+        const snowfallContainer = document.getElementById('snowfall');
+        const snowflakeChars = ['❄', '❅', '❆', '•', '∗'];
+        const swayClasses = ['sway1', 'sway2', 'sway3'];
+
+        for (let i = 0; i < 80; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake ' + swayClasses[Math.floor(Math.random() * swayClasses.length)];
+            snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDelay = Math.random() * 10 + 's';
+            snowflake.style.animationDuration = (8 + Math.random() * 12) + 's';
+            snowflake.style.fontSize = (8 + Math.random() * 16) + 'px';
+            snowflake.style.opacity = 0.4 + Math.random() * 0.5;
+            snowfallContainer.appendChild(snowflake);
+        }
+
+        // Envelope click handler
+        const envelope = document.getElementById('envelope');
+        let isOpen = false;
+
+        envelope.addEventListener('click', () => {
+            if (!isOpen) {
+                isOpen = true;
+                envelope.classList.add('open');
+                setTimeout(() => {
+                    typewriterEffect();
+                }, 1200);
+            }
+        });
+
+        // Realistic quill writing effect
+        const quill = document.getElementById('quill');
+        const letter = document.querySelector('.letter');
+
+        // Quill state
+        let quillX = 0, quillY = 0;
+        let targetX = 0, targetY = 0;
+        let quillAngle = -130;
+        let isWriting = false;
+
+        // Characters that need more ink pressure
+        const heavyChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?;:';
+        const punctuation = '.,!?;:\'"()-';
+
+        // Update quill position smoothly
+        function updateQuillSmooth() {
+            if (!isWriting) return;
+
+            // Smooth interpolation
+            quillX += (targetX - quillX) * 0.3;
+            quillY += (targetY - quillY) * 0.3;
+
+            // Add slight wobble for realism
+            const wobbleX = Math.sin(Date.now() * 0.02) * 1.5;
+            const wobbleY = Math.cos(Date.now() * 0.025) * 1;
+
+            // Calculate angle based on movement direction
+            const dx = targetX - quillX;
+            const targetAngle = -130 + (dx * 0.5);
+            quillAngle += (targetAngle - quillAngle) * 0.1;
+
+            quill.style.left = (quillX + wobbleX) + 'px';
+            quill.style.top = (quillY + wobbleY) + 'px';
+            quill.style.transform = `rotate(${quillAngle}deg)`;
+
+            requestAnimationFrame(updateQuillSmooth);
+        }
+
+        function updateQuillTarget(element) {
+            if (!element) return;
+
+            const lastSpan = element.querySelector('span:last-child');
+            if (lastSpan) {
+                const rect = lastSpan.getBoundingClientRect();
+                const letterRect = letter.getBoundingClientRect();
+
+                targetX = rect.right - letterRect.left + 8;
+                targetY = rect.top - letterRect.top - 5;
+            }
+        }
+
+        // Check if mobile for writing speed
+        const isMobileDevice = window.innerWidth <= 768;
+
+        // Get variable timing for realistic writing speed
+        function getCharDelay(char, prevChar) {
+            // Faster on mobile
+            let baseDelay = isMobileDevice ? 35 : 55;
+
+            // Slower for capitals (starting new words)
+            if (char === char.toUpperCase() && char.match(/[A-Z]/)) {
+                baseDelay += isMobileDevice ? 15 : 30;
+            }
+
+            // Pause after punctuation
+            if (punctuation.includes(prevChar)) {
+                baseDelay += isMobileDevice ? 80 : 150;
+            }
+
+            // Slight pause at spaces (lifting pen)
+            if (char === ' ') {
+                baseDelay += isMobileDevice ? 10 : 20;
+            }
+
+            // Add randomness for natural feel
+            baseDelay += Math.random() * (isMobileDevice ? 15 : 25) - (isMobileDevice ? 7 : 12);
+
+            return Math.max(20, baseDelay);
+        }
+
+        async function writeText(element, text) {
+            return new Promise((resolve) => {
+                let i = 0;
+
+                function writeNextChar() {
+                    if (i >= text.length) {
+                        resolve();
+                        return;
+                    }
+
+                    const char = text[i];
+                    const prevChar = i > 0 ? text[i - 1] : '';
+
+                    if (char === '\n') {
+                        element.innerHTML += '<br>';
+                    } else {
+                        // Create span for each character with ink effect
+                        const span = document.createElement('span');
+                        span.className = 'ink-char';
+
+                        // Heavy ink for capitals and punctuation
+                        if (heavyChars.includes(char)) {
+                            span.classList.add('heavy');
+                        }
+
+                        span.textContent = char;
+                        element.appendChild(span);
+                    }
+
+                    updateQuillTarget(element);
+                    i++;
+
+                    const delay = getCharDelay(char, prevChar);
+                    setTimeout(writeNextChar, delay);
+                }
+
+                writeNextChar();
+            });
+        }
+
+        async function typewriterEffect() {
+            const elements = [
+                { id: 'title', text: letterData.title, pauseAfter: 600 },
+                { id: 'para1', text: letterData.para1, pauseAfter: 400 },
+                { id: 'para2', text: letterData.para2, pauseAfter: 400 },
+                { id: 'para3', text: letterData.para3, pauseAfter: 500 },
+                { id: 'signature', text: letterData.signature, pauseAfter: 0 }
+            ];
+
+            // Initialize quill position
+            const letterRect = letter.getBoundingClientRect();
+            quillX = 50;
+            quillY = 30;
+            targetX = 50;
+            targetY = 30;
+
+            // Show and animate quill
+            isWriting = true;
+            quill.classList.add('writing');
+            updateQuillSmooth();
+
+            // Write each section
+            for (const { id, text, pauseAfter } of elements) {
+                const element = document.getElementById(id);
+
+                // Move quill to start of new line
+                const rect = element.getBoundingClientRect();
+                targetX = rect.left - letterRect.left + 20;
+                targetY = rect.top - letterRect.top;
+
+                await new Promise(r => setTimeout(r, 200)); // Brief pause before starting
+
+                await writeText(element, text);
+
+                if (pauseAfter > 0) {
+                    await new Promise(r => setTimeout(r, pauseAfter));
+                }
+            }
+
+            // Finish writing - quill lifts off
+            await new Promise(r => setTimeout(r, 300));
+            isWriting = false;
+            quill.classList.remove('writing');
+        }
+
+        // Load character images
+        const char1Image = new Image();
+        char1Image.src = 'character1.png';
+
+        const char2Image = new Image();
+        char2Image.src = 'character2.png';
+
+        const char1Canvas = document.getElementById('char1');
+        const char1Ctx = char1Canvas.getContext('2d');
+        char1Ctx.imageSmoothingEnabled = false;
+
+        const char2Canvas = document.getElementById('char2');
+        const char2Ctx = char2Canvas.getContext('2d');
+        char2Ctx.imageSmoothingEnabled = false;
+
+        let char1Loaded = false;
+        let char2Loaded = false;
+
+        char1Image.onload = function() {
+            char1Loaded = true;
+        };
+
+        char2Image.onload = function() {
+            char2Loaded = true;
+        };
+
+        // Direction enum: 'front', 'back', 'left', 'right'
+        // Generic function to draw character with chill walking animation and directional views
+        function drawCharacterWithWalk(ctx, img, loaded, frame, direction, imgWidth, imgHeight, isMoving) {
+            ctx.clearRect(0, 0, 128, 128);
+
+            if (!loaded) return;
+
+            ctx.save();
+
+            // Slower, more relaxed walking animation
+            const slowFrame = frame * 0.12; // Much slower movement
+
+            // Gentle body sway (side to side like chill walking)
+            const bodySway = Math.sin(slowFrame) * 1.5;
+            const bodyBob = Math.abs(Math.sin(slowFrame * 2)) * 1; // Subtle up-down
+
+            // Relaxed leg movement
+            const legOffset = isMoving ? Math.sin(slowFrame) * 2 : 0;
+
+            // Create an offscreen canvas to manipulate the sprite
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = imgWidth;
+            tempCanvas.height = imgHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.imageSmoothingEnabled = false;
+            tempCtx.drawImage(img, 0, 0);
+
+            // Calculate split point (where legs start - roughly 65% down)
+            const splitY = Math.floor(imgHeight * 0.65);
+            const legHeight = imgHeight - splitY;
+
+            // Create output canvas for modified sprite
+            const outCanvas = document.createElement('canvas');
+            outCanvas.width = imgWidth + 10;
+            outCanvas.height = imgHeight + 10;
+            const outCtx = outCanvas.getContext('2d');
+            outCtx.imageSmoothingEnabled = false;
+
+            // Draw upper body with gentle sway and bob
+            outCtx.drawImage(tempCanvas, 0, 0, imgWidth, splitY, bodySway, bodyBob, imgWidth, splitY);
+
+            // Draw left leg with relaxed offset
+            const legWidth = Math.floor(imgWidth / 2);
+            outCtx.drawImage(
+                tempCanvas,
+                0, splitY, legWidth, legHeight,
+                legOffset + bodySway * 0.3, splitY + bodyBob, legWidth, legHeight
+            );
+
+            // Draw right leg with opposite relaxed offset
+            outCtx.drawImage(
+                tempCanvas,
+                legWidth, splitY, legWidth, legHeight,
+                legWidth - legOffset + bodySway * 0.3, splitY + bodyBob, legWidth, legHeight
+            );
+
+            // Calculate scale to fit in 128x128 canvas with some padding
+            const scale = Math.min(110 / imgWidth, 110 / imgHeight);
+            const drawWidth = imgWidth * scale;
+            const drawHeight = imgHeight * scale;
+            const offsetX = (128 - drawWidth) / 2;
+            const offsetY = (128 - drawHeight) / 2;
+
+            // Apply directional transformations
+            ctx.translate(64, 64); // Move to center for transformations
+
+            if (direction === 'back') {
+                // Walking away - show back view by darkening and simplifying
+                // Flip vertically won't work well, so we simulate with color shift
+                ctx.translate(-64, -64);
+                ctx.drawImage(outCanvas, 0, 0, imgWidth, imgHeight, offsetX, offsetY, drawWidth, drawHeight);
+
+                // Overlay a dark tint to simulate back view
+                ctx.globalCompositeOperation = 'source-atop';
+                ctx.fillStyle = 'rgba(30, 30, 50, 0.35)';
+                ctx.fillRect(0, 0, 128, 128);
+                ctx.globalCompositeOperation = 'source-over';
+
+            } else if (direction === 'left' || direction === 'right') {
+                // Side view - squash horizontally to simulate side profile
+                const squashFactor = 0.5; // Make character narrower for side view
+
+                if (direction === 'left') {
+                    ctx.scale(-squashFactor, 1); // Flip and squash
+                } else {
+                    ctx.scale(squashFactor, 1); // Just squash
+                }
+
+                ctx.translate(-64, -64);
+                ctx.drawImage(outCanvas, 0, 0, imgWidth, imgHeight, offsetX, offsetY, drawWidth, drawHeight);
+
+            } else {
+                // Front view (default)
+                ctx.translate(-64, -64);
+                ctx.drawImage(outCanvas, 0, 0, imgWidth, imgHeight, offsetX, offsetY, drawWidth, drawHeight);
+            }
+
+            ctx.restore();
+        }
+
+        // Character state tracking
+        let char1IsMoving = true;
+        let char2IsMoving = true;
+        let char1Direction = 'front';
+        let char2Direction = 'front';
+
+        // Draw Character 1 with walking animation
+        function drawCharacter1(frame, direction) {
+            drawCharacterWithWalk(char1Ctx, char1Image, char1Loaded, frame, direction,
+                char1Image.naturalWidth || 64, char1Image.naturalHeight || 64, char1IsMoving);
+        }
+
+        // Draw Character 2 with walking animation
+        function drawCharacter2(frame, direction) {
+            drawCharacterWithWalk(char2Ctx, char2Image, char2Loaded, frame, direction,
+                char2Image.naturalWidth || 64, char2Image.naturalHeight || 64, char2IsMoving);
+        }
+
+        // Character walking animation state
+        const char1El = document.getElementById('char1');
+        const char2El = document.getElementById('char2');
+
+        // Check if mobile
+        const isMobile = window.innerWidth <= 768;
+        const charSize = isMobile ? (window.innerWidth <= 480 ? 64 : 80) : 128;
+
+        // Define positions - adjusted for mobile
+        const padding = isMobile ? 20 : 80;
+        let char1Pos = { x: 50, y: window.innerHeight - (isMobile ? 100 : 150) };
+        let char2Pos = { x: window.innerWidth - (isMobile ? 100 : 200), y: window.innerHeight - (isMobile ? 120 : 180) };
+
+        let char1Target = null;
+        let char2Target = null;
+
+        // Chill walking - sometimes stop and rest
+        let char1RestTimer = 0;
+        let char2RestTimer = 0;
+        let char1Resting = false;
+        let char2Resting = false;
+
+        const baseSpeed = isMobile ? 0.5 : 0.8; // Even slower on mobile
+
+        function getRandomTarget() {
+            const minY = isMobile ? 100 : 150;
+            const maxY = window.innerHeight - (isMobile ? 120 : 200);
+            return {
+                x: padding + Math.random() * (window.innerWidth - padding * 2 - charSize),
+                y: minY + Math.random() * (maxY - minY)
+            };
+        }
+
+        // Initialize targets after function is defined
+        char1Target = getRandomTarget();
+        char2Target = getRandomTarget();
+
+        // Determine direction based on movement vector
+        function getDirection(dx, dy, currentDirection) {
+            const absDx = Math.abs(dx);
+            const absDy = Math.abs(dy);
+
+            // Use threshold to prevent jittery direction changes
+            const threshold = 0.3;
+
+            // Determine primary direction based on which axis has more movement
+            if (absDx < threshold && absDy < threshold) {
+                // Not moving enough, keep current direction
+                return currentDirection;
+            }
+
+            if (absDy > absDx * 1.2) {
+                // Primarily vertical movement
+                return dy < 0 ? 'back' : 'front'; // Up = back view, Down = front view
+            } else {
+                // Primarily horizontal movement
+                return dx < 0 ? 'left' : 'right'; // Left/Right side views
+            }
+        }
+
+        function moveCharacterChill(pos, target, resting, currentDirection) {
+            if (resting) {
+                return { pos, target, direction: currentDirection, isMoving: false };
+            }
+
+            const dx = target.x - pos.x;
+            const dy = target.y - pos.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 10) {
+                return { pos, target: getRandomTarget(), direction: 'front', isMoving: false, reachedTarget: true };
+            }
+
+            // Smooth, gradual speed with slight variation
+            const currentSpeed = baseSpeed + Math.sin(Date.now() * 0.001) * 0.2;
+
+            const moveX = (dx / dist) * currentSpeed;
+            const moveY = (dy / dist) * currentSpeed;
+
+            pos.x += moveX;
+            pos.y += moveY;
+
+            // Calculate direction based on movement
+            const direction = getDirection(moveX, moveY, currentDirection);
+
+            return { pos, target, direction, isMoving: true };
+        }
+
+        // Trail effect - winter themed
+        const trails = ['❄', '✨', '❅', '💫', '🌟'];
+        let trailCounter = 0;
+
+        function createTrail(x, y) {
+            if (trailCounter++ % 40 !== 0) return; // Less frequent trails
+
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.textContent = trails[Math.floor(Math.random() * trails.length)];
+            trail.style.left = (x + 40 + Math.random() * 20) + 'px';
+            trail.style.top = (y + 60) + 'px';
+            document.body.appendChild(trail);
+
+            setTimeout(() => trail.remove(), 1500);
+        }
+
+        // Animation loop
+        let walkFrame = 0;
+        function animate() {
+            walkFrame++;
+
+            // Handle resting for char1
+            if (char1Resting) {
+                char1RestTimer--;
+                if (char1RestTimer <= 0) {
+                    char1Resting = false;
+                }
+            } else if (Math.random() < 0.002) { // Occasionally stop to rest
+                char1Resting = true;
+                char1RestTimer = 60 + Math.random() * 120; // Rest for 1-3 seconds
+            }
+
+            // Handle resting for char2
+            if (char2Resting) {
+                char2RestTimer--;
+                if (char2RestTimer <= 0) {
+                    char2Resting = false;
+                }
+            } else if (Math.random() < 0.002) {
+                char2Resting = true;
+                char2RestTimer = 60 + Math.random() * 120;
+            }
+
+            // Move characters with chill behavior
+            const char1Result = moveCharacterChill(char1Pos, char1Target, char1Resting, char1Direction);
+            char1Pos = char1Result.pos;
+            char1Target = char1Result.target;
+            char1Direction = char1Result.direction;
+            char1IsMoving = char1Result.isMoving;
+            if (char1Result.reachedTarget && Math.random() < 0.5) {
+                char1Resting = true;
+                char1RestTimer = 90 + Math.random() * 150;
+            }
+
+            const char2Result = moveCharacterChill(char2Pos, char2Target, char2Resting, char2Direction);
+            char2Pos = char2Result.pos;
+            char2Target = char2Result.target;
+            char2Direction = char2Result.direction;
+            char2IsMoving = char2Result.isMoving;
+            if (char2Result.reachedTarget && Math.random() < 0.5) {
+                char2Resting = true;
+                char2RestTimer = 90 + Math.random() * 150;
+            }
+
+            // Smooth position updates with easing
+            const currentX1 = parseFloat(char1El.style.left) || char1Pos.x;
+            const currentY1 = parseFloat(char1El.style.top) || char1Pos.y;
+            char1El.style.left = (currentX1 + (char1Pos.x - currentX1) * 0.1) + 'px';
+            char1El.style.top = (currentY1 + (char1Pos.y - currentY1) * 0.1) + 'px';
+
+            const currentX2 = parseFloat(char2El.style.left) || char2Pos.x;
+            const currentY2 = parseFloat(char2El.style.top) || char2Pos.y;
+            char2El.style.left = (currentX2 + (char2Pos.x - currentX2) * 0.1) + 'px';
+            char2El.style.top = (currentY2 + (char2Pos.y - currentY2) * 0.1) + 'px';
+
+            // Draw walking animation with directional views
+            drawCharacter1(walkFrame, char1Direction);
+            drawCharacter2(walkFrame, char2Direction);
+
+            // Create trails only when moving
+            if (char1IsMoving) createTrail(char1Pos.x, char1Pos.y);
+            if (char2IsMoving) createTrail(char2Pos.x, char2Pos.y);
+
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize positions
+        char1El.style.left = char1Pos.x + 'px';
+        char1El.style.top = char1Pos.y + 'px';
+        char2El.style.left = char2Pos.x + 'px';
+        char2El.style.top = char2Pos.y + 'px';
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>
