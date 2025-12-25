@@ -646,23 +646,19 @@
                 // On mobile, center the letter with JS
                 if (isMobileDevice) {
                     setTimeout(() => {
-                        letterEl.classList.add('mobile-centered');
-
-                        // Set width first
-                        const letterWidth = window.innerWidth * 0.92;
-                        letterEl.style.width = letterWidth + 'px';
-                        letterEl.style.maxHeight = (window.innerHeight * 0.85) + 'px';
-                        letterEl.style.transform = 'none';
-
-                        // Wait for layout, then get actual height and center
-                        requestAnimationFrame(() => {
-                            const actualHeight = letterEl.offsetHeight;
-                            const letterLeft = (window.innerWidth - letterWidth) / 2;
-                            const letterTop = (window.innerHeight - actualHeight) / 2;
-
-                            letterEl.style.left = letterLeft + 'px';
-                            letterEl.style.top = Math.max(10, letterTop) + 'px';
-                        });
+                        // Use flexbox centering on a wrapper approach via inline styles
+                        letterEl.style.cssText = `
+                            position: fixed !important;
+                            top: 50% !important;
+                            left: 50% !important;
+                            transform: translate(-50%, -50%) !important;
+                            width: 92vw !important;
+                            max-height: 85vh !important;
+                            overflow-y: auto !important;
+                            z-index: 1000 !important;
+                            padding: 20px !important;
+                            margin: 0 !important;
+                        `;
                     }, 800);
                 }
 
