@@ -288,14 +288,13 @@ body {
 }
 
 /* Initial static positions to prevent overlap before JS takes over */
+/* We use transform here so JS can override it seamlessly later */
 #cont1 {
-    left: 20vw;
-    top: 50vh;
+    transform: translate(20vw, 50vh);
 }
 
 #cont2 {
-    left: 70vw;
-    top: 50vh;
+    transform: translate(80vw, 50vh);
 }
 
 .char-center-left {
