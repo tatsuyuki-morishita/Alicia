@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(createParticle, 200);
 
     // Sample Content
-    const greetingText = "Dearest Friend,";
+    const greetingText = "Dear Alicia,";
     const bodyText = "I am so incredibly happy to welcome you to Toronto! It has been far too long, and I cannot wait to show you around this beautiful city. From the CN Tower to the hidden cafes, we are going to have an amazing time. \n\nGet ready for an unforgettable adventure!";
-    const signatureText = "With love,\n[Your Name]";
+    const signatureText = "Warmly,\nTatsuyuki";
 
     let isLetterOpen = false;
 
