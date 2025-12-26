@@ -150,46 +150,71 @@ document.addEventListener('DOMContentLoaded', () => {
         cont2.style.top = '50px';
 
         // Apply animations
-        // Apply animations
-        // Apply animations
-        // Container gets the Path
-        cont1.classList.add('walking-path');
-
         // Character gets the Action (Image/Flip/Bob)
         // Note: Direction is now handled by JS loop below to ensure Safari compatibility
         char1.classList.add('walking-action');
+        char2.classList.add('walking-action');
 
-        // Delay second character
+        // Start Random Walk for Char 1 immediately
+        startRandomWalk(cont1, char1, 0, 0);
+
+        // Start Random Walk for Char 2 with a small delay or offset
         setTimeout(() => {
-            cont2.classList.add('walking-path');
-            char2.classList.add('walking-action');
-            // Sync direction loop for char2 (offset by 3s in logic if needed, but path is continuous)
-            // Actually, if we start the interval for both, they follow the same absolute time if path starts same time.
-            // But cont2 starts 3s later. 
-            // Simplified: The path animation handles position. The direction class handles image.
-            // Since cont2 starts 3s later, its "0%" is 3s behind.
-            // So we need separate timers or logic.
-            startDirectionLoop(char2);
-        }, 3000);
+            // Start at a different random position or just start walking
+            startRandomWalk(cont2, char2, window.innerWidth - 100, 0);
+        }, 2000);
 
-        startDirectionLoop(char1);
 
-        function startDirectionLoop(element) {
-            const directions = ['dir-right', 'dir-front', 'dir-left', 'dir-back'];
-            let currentDir = 0;
+        function startRandomWalk(container, character, startX, startY) {
+            // Initial Pos
+            let currentX = startX || Math.random() * (window.innerWidth - 100);
+            let currentY = startY || Math.random() * (window.innerHeight - 150);
+            container.style.transform = `translate(${currentX}px, ${currentY}px)`;
 
-            // Function to set direction
-            const setDir = () => {
-                element.classList.remove(...directions);
-                element.classList.add(directions[currentDir]);
-                currentDir = (currentDir + 1) % 4;
-            };
+            function walkToNewPoint() {
+                // Pick random destination
+                const nextX = Math.random() * (window.innerWidth - 100);
+                const nextY = Math.random() * (window.innerHeight - 150);
 
-            // Set initial immediately
-            setDir();
+                // Calculate distance to determine duration (constant speed)
+                const dx = nextX - currentX;
+                const dy = nextY - currentY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const speed = 100; // pixels per second (adjust for speed)
+                const duration = distance / speed;
 
-            // Change every 5000ms (25% of 20s)
-            setInterval(setDir, 5000);
+                // Determine Direction
+                character.classList.remove('dir-right', 'dir-front', 'dir-left', 'dir-back');
+
+                // Simple direction logic: mainly horizontal or vertical?
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    // Horizontal
+                    if (dx > 0) character.classList.add('dir-right');
+                    else character.classList.add('dir-left');
+                } else {
+                    // Vertical
+                    if (dy > 0) character.classList.add('dir-front'); // Down
+                    else character.classList.add('dir-back'); // Up
+                }
+
+                // Apply Transition
+                container.style.transition = `transform ${duration}s linear`;
+                // Force reflow
+                void container.offsetWidth;
+
+                // Move
+                container.style.transform = `translate(${nextX}px, ${nextY}px)`;
+
+                // Update current for next step
+                currentX = nextX;
+                currentY = nextY;
+
+                // Next walk after this one finishes
+                setTimeout(walkToNewPoint, duration * 1000);
+            }
+
+            // Start first walk shortly
+            setTimeout(walkToNewPoint, 100);
         }
 
     }

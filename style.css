@@ -282,6 +282,9 @@ body {
     height: 120px;
     z-index: 60;
     pointer-events: none;
+    top: 0;
+    left: 0;
+    /* transition handled in JS */
 }
 
 .char-center-left {
@@ -330,9 +333,7 @@ body {
 }
 
 /* Animations */
-.walking-path {
-    animation: walkPath 20s infinite linear;
-}
+/* Removed CSS Path Animation to prevent getting stuck */
 
 .walking-action {
     animation: walkSteps 0.5s infinite steps(1);
