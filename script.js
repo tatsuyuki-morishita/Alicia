@@ -156,12 +156,21 @@ document.addEventListener('DOMContentLoaded', () => {
         char2.classList.add('walking-action');
 
         // Start Random Walk for Char 1 
-        startRandomWalk(cont1, char1, window.innerWidth * 0.3, window.innerHeight * 0.5);
+        // Initialize positions explicitly side-by-side
+        cont1.style.transform = `translate(${window.innerWidth * 0.2}px, ${window.innerHeight * 0.5}px)`;
+        cont2.style.transform = `translate(${window.innerWidth * 0.7}px, ${window.innerHeight * 0.5}px)`;
+        // Ensure they face front initially
+        char1.classList.add('dir-front');
+        char2.classList.add('dir-front');
 
-        // Start Random Walk for Char 2 
+        // Wait 3 seconds before starting the random walk so they stay side-by-side initially
         setTimeout(() => {
-            startRandomWalk(cont2, char2, window.innerWidth * 0.6, window.innerHeight * 0.5);
-        }, 500); // Slight delay for natural feel
+            startRandomWalk(cont1, char1, window.innerWidth * 0.2, window.innerHeight * 0.5);
+        }, 3000);
+
+        setTimeout(() => {
+            startRandomWalk(cont2, char2, window.innerWidth * 0.7, window.innerHeight * 0.5);
+        }, 3000);
 
 
         function startRandomWalk(container, character, startX, startY) {
