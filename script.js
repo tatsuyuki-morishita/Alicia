@@ -155,20 +155,20 @@ document.addEventListener('DOMContentLoaded', () => {
         char1.classList.add('walking-action');
         char2.classList.add('walking-action');
 
-        // Start Random Walk for Char 1 immediately
-        startRandomWalk(cont1, char1, 0, 0);
+        // Start Random Walk for Char 1 
+        startRandomWalk(cont1, char1, window.innerWidth * 0.3, window.innerHeight * 0.5);
 
-        // Start Random Walk for Char 2 with a small delay or offset
+        // Start Random Walk for Char 2 
         setTimeout(() => {
-            // Start at a different random position or just start walking
-            startRandomWalk(cont2, char2, window.innerWidth - 100, 0);
-        }, 2000);
+            startRandomWalk(cont2, char2, window.innerWidth * 0.6, window.innerHeight * 0.5);
+        }, 500); // Slight delay for natural feel
 
 
         function startRandomWalk(container, character, startX, startY) {
-            // Initial Pos
-            let currentX = startX || Math.random() * (window.innerWidth - 100);
-            let currentY = startY || Math.random() * (window.innerHeight - 150);
+            // Initial Pos - Check for undefined specifically, as 0 is valid
+            let currentX = (startX !== undefined) ? startX : Math.random() * (window.innerWidth - 100);
+            let currentY = (startY !== undefined) ? startY : Math.random() * (window.innerHeight - 150);
+
             container.style.transform = `translate(${currentX}px, ${currentY}px)`;
 
             function walkToNewPoint() {
