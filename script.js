@@ -151,17 +151,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Apply animations
         // Apply animations
+        // Apply animations
         // Container gets the Path
         cont1.classList.add('walking-path');
 
         // Character gets the Action (Image/Flip/Bob)
+        // Note: Direction is now handled by JS loop below to ensure Safari compatibility
         char1.classList.add('walking-action');
 
         // Delay second character
         setTimeout(() => {
             cont2.classList.add('walking-path');
             char2.classList.add('walking-action');
-        }, 3000); // 3s delay so they aren't on top of each other
+            // Sync direction loop for char2 (offset by 3s in logic if needed, but path is continuous)
+            // Actually, if we start the interval for both, they follow the same absolute time if path starts same time.
+            // But cont2 starts 3s later. 
+            // Simplified: The path animation handles position. The direction class handles image.
+            // Since cont2 starts 3s later, its "0%" is 3s behind.
+            // So we need separate timers or logic.
+            startDirectionLoop(char2);
+        }, 3000);
+
+        startDirectionLoop(char1);
+
+        function startDirectionLoop(element) {
+            const directions = ['dir-right', 'dir-front', 'dir-left', 'dir-back'];
+            let currentDir = 0;
+
+            // Function to set direction
+            const setDir = () => {
+                element.classList.remove(...directions);
+                element.classList.add(directions[currentDir]);
+                currentDir = (currentDir + 1) % 4;
+            };
+
+            // Set initial immediately
+            setDir();
+
+            // Change every 5000ms (25% of 20s)
+            setInterval(setDir, 5000);
+        }
 
     }
 });
