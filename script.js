@@ -160,9 +160,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Match CSS: 20vw (0.2) and 80vw (0.8)
         cont1.style.transform = `translate(${window.innerWidth * 0.2}px, ${window.innerHeight * 0.5}px)`;
         cont2.style.transform = `translate(${window.innerWidth * 0.8}px, ${window.innerHeight * 0.5}px)`;
-        // Ensure they face front initially
-        char1.classList.add('dir-front');
-        char2.classList.add('dir-front');
+        // Ensure they face inward (Symmetric)
+        char1.classList.remove('dir-front');
+        char1.classList.add('dir-right'); // Left char faces Right
+
+        char2.classList.remove('dir-front');
+        char2.classList.add('dir-left');  // Right char faces Left
 
         // Wait 3 seconds before starting the random walk so they stay side-by-side initially
         setTimeout(() => {
