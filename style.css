@@ -1,0 +1,344 @@
+:root {
+    --bg-color: #fce4ec;
+    --envelope-color: #d81b60;
+    --envelope-flap-color: #ad1457;
+    --paper-color: #fffaf0;
+    --text-color: #4a4a4a;
+    --accent-color: #c2185b;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: url('toronto_winter_bg.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Playfair Display', serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+/* Falling Elements Container */
+#particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    /* Behind envelope but in front of bg */
+    overflow: hidden;
+}
+
+.snowflake,
+.maple-leaf {
+    position: absolute;
+    top: -20px;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.snowflake {
+    color: #fff;
+    font-size: 1em;
+    text-shadow: 0 0 5px #000;
+}
+
+.maple-leaf {
+    color: #d81b60;
+    /* Reddish pink */
+    font-size: 1.2em;
+    text-shadow: 0 0 2px #fff;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh) rotate(360deg);
+    }
+}
+
+.scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Envelope Styles */
+.envelope {
+    width: 300px;
+    height: 200px;
+    background-color: var(--envelope-color);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    z-index: 10;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.envelope:hover {
+    transform: scale(1.05);
+}
+
+.envelope.open {
+    /* No opacity fade/movement on envelope yet */
+    pointer-events: none;
+    transform: none;
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 100px solid var(--envelope-flap-color);
+    transform-origin: top;
+    transition: transform 0.4s ease;
+    z-index: 20;
+    /* Flap covers extracted paper initially */
+}
+
+/* Open state for flap */
+.envelope.open .flap {
+    transform: rotateX(180deg);
+    z-index: 0;
+    /* Move behind after opening */
+}
+
+/* Paper Styles */
+.paper {
+    position: absolute;
+    top: 0;
+    /* Start aligned with envelope */
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    width: 250px;
+    height: 180px;
+    background-color: var(--paper-color);
+    transition: all 1s ease;
+    z-index: 1;
+    /* Inside envelope (under front body/flap) */
+    overflow: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+}
+
+/* Animation Phases */
+/* 1. Flap opens (handled by .envelope.open .flap) */
+/* 2. Paper slides up */
+.paper.extracting {
+    opacity: 1;
+    z-index: 15;
+    /* Moves above envelope body */
+    top: -100px;
+    /* Slides up */
+    transition: top 1s ease, z-index 0s 0.5s;
+}
+
+/* 3. Paper expands */
+.paper.visible {
+    position: fixed;
+    /* Fix to viewport */
+    top: 50%;
+    left: 50%;
+    width: 80vw;
+    /* Explicit viewport width */
+    height: 80vh;
+    max-width: 600px;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 50;
+    /* Topmost */
+    opacity: 1;
+
+    background-image:
+        linear-gradient(90deg, transparent 39px, #abced4 39px, #abced4 41px, transparent 41px),
+        linear-gradient(#eee .1em, transparent .1em);
+    background-size: 100% 2em;
+}
+
+/* Paper Content */
+.paper-content {
+    position: relative;
+    z-index: 51;
+    color: var(--text-color);
+    padding: 20px 30px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.paper-content h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.paper-content p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    line-height: 2em;
+    margin-bottom: 15px;
+}
+
+/* Character Container */
+.char-container {
+    position: fixed;
+    width: 100px;
+    height: 120px;
+    z-index: 60;
+    pointer-events: none;
+}
+
+.char-center-left {
+    top: 50%;
+    left: 50%;
+    transform: translate(-100%, -50%);
+}
+
+.char-center-right {
+    top: 50%;
+    left: 50%;
+    transform: translate(0, -50%);
+}
+
+/* Character Sprite */
+.character {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+
+
+
+/* Char 1 Config */
+.char-1 {
+    --img-front: url('char1_front.png');
+    --img-front-2: url('char1_front_walk2.png');
+    --img-back: url('char1_back.png');
+    --img-back-2: url('char1_back_walk2.png');
+    --img-side: url('char1_side.png');
+    --img-side-2: url('char1_side_walk2.png');
+    background-image: var(--img-front);
+}
+
+/* Char 2 Config */
+.char-2 {
+    --img-front: url('char2_front.png');
+    --img-front-2: url('char2_front_walk2.png');
+    --img-back: url('char2_back.png');
+    --img-back-2: url('char2_back_walk2.png');
+    --img-side: url('char2_side.png');
+    --img-side-2: url('char2_side_walk2.png');
+    background-image: var(--img-front);
+}
+
+/* Animations */
+.walking-path {
+    animation: walkPath 20s infinite linear;
+}
+
+.walking-action {
+    animation:
+        walkDirection 20s infinite steps(1),
+        walkSteps 0.5s infinite steps(1);
+    animation:
+        walkDirection 20s infinite steps(1),
+        walkSteps 0.5s infinite steps(1);
+    /* Toggles between frames */
+}
+
+/* Static front-facing walk */
+.walking-inplace {
+    --current-img-1: var(--img-front);
+    --current-img-2: var(--img-front-2);
+    animation: walkSteps 0.5s infinite steps(1);
+}
+
+/* Path: Moves the Container around the screen box */
+/* Assuming screen box is roughly full viewport. Offsets keep them inside. */
+@keyframes walkPath {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(calc(100vw - 120px), 0);
+    }
+
+    50% {
+        transform: translate(calc(100vw - 120px), calc(100vh - 150px));
+    }
+
+    75% {
+        transform: translate(0, calc(100vh - 150px));
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Direction: Sets the Base Orientation Variables */
+/* We use CSS variables to pass the current set of images to the step animation */
+@keyframes walkDirection {
+
+    /* 0-25%: Moving Right */
+    0% {
+        --current-img-1: var(--img-side);
+        --current-img-2: var(--img-side-2);
+        transform: scaleX(1);
+    }
+
+    /* 25-50%: Moving Down (Front View) */
+    25% {
+        --current-img-1: var(--img-front);
+        --current-img-2: var(--img-front-2);
+        transform: scaleX(1);
+    }
+
+    /* 50-75%: Moving Left */
+    50% {
+        --current-img-1: var(--img-side);
+        --current-img-2: var(--img-side-2);
+        transform: scaleX(-1);
+    }
+
+    /* 75-100%: Moving Up (Back View) */
+    75% {
+        --current-img-1: var(--img-back);
+        --current-img-2: var(--img-back-2);
+        transform: scaleX(1);
+    }
+
+    100% {
+        --current-img-1: var(--img-back);
+        --current-img-2: var(--img-back-2);
+    }
+}
+
+/* Step Animation: Toggles between frame 1 and 2 of the CURRENT direction */
+@keyframes walkSteps {
+    0% {
+        background-image: var(--current-img-1);
+    }
+
+    50% {
+        background-image: var(--current-img-2);
+    }
+}
