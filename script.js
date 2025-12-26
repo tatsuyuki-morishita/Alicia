@@ -76,10 +76,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Typewriter with Quill effect
+    // Typewriter effect
+    function typeWriter(text, element, speed = 30, callback) {
+        // Quill reference
+        const quill = document.getElementById('quill');
+        let i = 0;
+        element.innerHTML = "";
+
+        if (quill) quill.classList.add('writing');
+
+        function type() {
+            if (i < text.length) {
+                const char = text.charAt(i);
+                if (char === '\n') {
+                    element.innerHTML += '<br>';
+                } else {
+                    // Create a span to get position
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    element.appendChild(span);
+
+                    // Move Quill to this span
+                    if (quill) {
+                        const rect = span.getBoundingClientRect();
+                        // Offset to place quill tip at end of letter
+                        quill.style.left = `${rect.right}px`;
+                        // -5px offset for hot spot usually at bottom-left of image if transform-origin is bottom
+                        quill.style.top = `${rect.top - 60}px`;
+                    }
+                }
+                i++;
+                // Randomize speed slightly for realism
+                const randomSpeed = speed + (Math.random() * 20 - 10);
+                setTimeout(type, randomSpeed);
+            } else {
+                if (quill) quill.classList.remove('writing');
+                if (callback) callback();
+            }
+        }
+        type();
+    }
+
     function showContent() {
-        greetingEl.innerHTML = greetingText.replace(/\n/g, '<br>');
-        bodyEl.innerHTML = bodyText.replace(/\n/g, '<br>');
-        signatureEl.innerHTML = signatureText.replace(/\n/g, '<br>');
+        // Clear content initially
+        greetingEl.innerHTML = "";
+        bodyEl.innerHTML = "";
+        signatureEl.innerHTML = "";
+
+        // Start typing sequence
+        typeWriter(greetingText, greetingEl, 50, () => {
+            setTimeout(() => {
+                typeWriter(bodyText, bodyEl, 30, () => {
+                    setTimeout(() => {
+                        typeWriter(signatureText, signatureEl, 40);
+                    }, 300);
+                });
+            }, 300);
+        });
     }
 
     // Character Animation Logic
