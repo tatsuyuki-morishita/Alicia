@@ -294,7 +294,8 @@ body {
 }
 
 #cont2 {
-    transform: translate(80vw, 50vh);
+    /* 100vw - 20vw (margin) - 100px (element width) = Symmetric Left Edge */
+    transform: translate(calc(80vw - 100px), 50vh);
 }
 
 .char-center-left {

@@ -157,10 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Start Random Walk for Char 1 
         // Initialize positions explicitly side-by-side
-        // Match CSS: 20vw (0.2) and 80vw (0.8)
+        // Match CSS: 20vw (0.2) and 80vw (0.8) - 100px width for symmetry
         cont1.style.transform = `translate(${window.innerWidth * 0.2}px, ${window.innerHeight * 0.5}px)`;
-        cont2.style.transform = `translate(${window.innerWidth * 0.8}px, ${window.innerHeight * 0.5}px)`;
+        cont2.style.transform = `translate(${window.innerWidth * 0.8 - 100}px, ${window.innerHeight * 0.5}px)`;
         // Ensure they face inward (Symmetric)
+        char1.classList.remove('dir-front');
+        char1.classList.add('dir-right'); // Left char faces Right
         char1.classList.remove('dir-front');
         char1.classList.add('dir-right'); // Left char faces Right
 
@@ -175,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             // Start Random Walk for Char 2
-            startRandomWalk(cont2, char2, window.innerWidth * 0.8, window.innerHeight * 0.5);
+            startRandomWalk(cont2, char2, window.innerWidth * 0.8 - 100, window.innerHeight * 0.5);
         }, 3000);
 
 
