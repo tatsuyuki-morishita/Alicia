@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>A Special Letter</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=MedievalSharp&display=swap"
+		rel="stylesheet">
+</head>
+
+<body>
+	<div class="scene">
+		<div id="particles-container"></div>
+		<div class="letter-container">
+			<div class="envelope" id="envelope">
+				<div class="flap"></div>
+				<!-- Paper starts conceptually here or behind -->
+				<div class="paper" id="paper">
+					<div class="paper-content">
+						<h1 id="greeting"></h1>
+						<p id="message-body"></p>
+						<p id="signature"></p>
+					</div>
+				</div>
+				<div class="body"></div>
+				<div class="seal">Open Me</div>
+			</div>
+			<!-- Quill Element -->
+			<div id="quill" class="quill"></div>
+			<!-- Quill Element -->
+
+		</div>
+
+		<!-- Character Placeholders with Containers -->
+		<div class="char-container" id="cont1">
+			<div class="character char-1" id="char1"></div>
+		</div>
+		<div class="char-container" id="cont2">
+			<div class="character char-2" id="char2"></div>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+
+</html>
