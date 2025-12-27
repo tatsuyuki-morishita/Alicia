@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Open Letter Event
     // TARGET DATE: Change this to controls when the letter can be opened
-    const TARGET_DATE = new Date('2025-12-28T00:00:00');
+    const TARGET_DATE = new Date('2025-12-30T00:00:00');
 
     envelope.addEventListener('click', () => {
         const now = new Date();
