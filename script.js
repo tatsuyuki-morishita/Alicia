@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 return; // STOP here
             }
-
             // 1. Open Flap
             envelope.classList.add('open');
 
