@@ -48,12 +48,82 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open Letter Event
     // TARGET DATE: Change this to controls when the letter can be opened
     const TARGET_DATE = new Date('2025-12-30T00:00:00');
+    let isSecretlyUnlocked = false;
+
+    // Strict Secret Sequence: Left, Left, Right, Right
+    const SECRET_SEQUENCE = ['left', 'left', 'right', 'right'];
+    let sequenceIndex = 0;
+    let lastClickTime = 0;
+
+    function checkSecretUnlock(side) {
+        const now = Date.now();
+
+        // Timeout Reset (2 seconds)
+        if (now - lastClickTime > 2000) {
+            sequenceIndex = 0;
+        }
+        lastClickTime = now;
+
+        // Strict Check
+        if (side === SECRET_SEQUENCE[sequenceIndex]) {
+            sequenceIndex++;
+            console.log(`Sequence Correct: ${sequenceIndex} / ${SECRET_SEQUENCE.length}`);
+
+            // Check for completion
+            if (sequenceIndex === SECRET_SEQUENCE.length) {
+                isSecretlyUnlocked = true;
+                // Visual feedback
+                envelope.classList.add('shake');
+                setTimeout(() => envelope.classList.remove('shake'), 500);
+                const seal = document.querySelector('.seal');
+                if (seal) seal.innerText = "Unlocked";
+                console.log("Secret Unlocked!");
+                // Reset index so it doesn't trigger again immediately (optional)
+                sequenceIndex = 0;
+            }
+        } else {
+            // Wrong key! Strict Reset.
+            // However, if the wrong key matches the FIRST key of the sequence, 
+            // we can treat it as a new start (better UX), or strict reset (0).
+            // User requested strictness to avoid "spamming", so pure reset is safer.
+            // But L L L R R: L(1) L(2) L(fail->1?)
+            // If we want to ban "L L L R R", simply resetting to 0 on mismatch is fine.
+            // But if user accidentally clicks L L L, they have to wait or click wrong to restart?
+            // Actually, if side === sequence[0], let's set index to 1.
+            if (side === SECRET_SEQUENCE[0]) {
+                sequenceIndex = 1;
+                console.log("Sequence Reset (Restarted)");
+            } else {
+                sequenceIndex = 0;
+                console.log("Sequence Reset (Fail)");
+            }
+        }
+    }
+
+    if (char1) {
+        char1.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Small visual feedback on click
+            char1.style.transform = 'scale(1.1)';
+            setTimeout(() => char1.style.transform = '', 100);
+            checkSecretUnlock('left');
+        });
+    }
+
+    if (char2) {
+        char2.addEventListener('click', (e) => {
+            e.stopPropagation();
+            char2.style.transform = 'scale(1.1)';
+            setTimeout(() => char2.style.transform = '', 100);
+            checkSecretUnlock('right');
+        });
+    }
 
     envelope.addEventListener('click', () => {
         const now = new Date();
 
         if (!isLetterOpen) {
-            if (now < TARGET_DATE) {
+            if (now < TARGET_DATE && !isSecretlyUnlocked) {
                 // Too early!
                 envelope.classList.add('shake');
 

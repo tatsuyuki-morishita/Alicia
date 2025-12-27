@@ -369,6 +369,8 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
+    pointer-events: auto;
+    cursor: pointer;
 }
 
 
