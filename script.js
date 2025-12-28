@@ -8,6 +8,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const char2 = document.getElementById('char2');
     const particlesContainer = document.getElementById('particles-container');
 
+    // Language Switcher Logic
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            switchLanguage(lang);
+        });
+    });
+
+    function switchLanguage(lang) {
+        currentLang = lang;
+
+        // Update Buttons
+        langBtns.forEach(b => b.classList.remove('active'));
+        document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+
+        // Update Text Variables
+        greetingText = translations[lang].greeting;
+        bodyText = translations[lang].body;
+        signatureText = translations[lang].signature;
+
+        // If letter is already open, refresh content
+        if (isLetterOpen) {
+            // Stop any current typing? (Optional, but safer to just clear and re-type)
+            showContent();
+        }
+    }
+
     // Falling Particles Logic
     function createParticle() {
         const particle = document.createElement('div');
@@ -39,9 +68,31 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(createParticle, 200);
 
     // Sample Content
-    const greetingText = "Dear Alicia,";
-    const bodyText = "I am so incredibly happy to welcome you to Toronto! It has been far too long, and I cannot wait to show you around this beautiful city. From the CN Tower to the hidden cafes, we are going to have an amazing time. \n\nGet ready for an unforgettable adventure!";
-    const signatureText = "Warmly,\nTatsuyuki";
+    // Translations
+    const translations = {
+        en: {
+            greeting: "Dear Alicia,",
+            body: "I am so incredibly happy to welcome you to Toronto! It has been far too long, and I cannot wait to show you around this beautiful city. From the CN Tower to the hidden cafes, we are going to have an amazing time. \n\nGet ready for an unforgettable adventure!",
+            signature: "Warmly,\nTatsuyuki"
+        },
+        fr: {
+            greeting: "Chère Alicia,",
+            body: "Je suis incroyablement heureux de t'accueillir à Toronto ! Cela fait bien trop longtemps, et j'ai hâte de te faire découvrir cette ville magnifique. De la Tour CN aux petits cafés cachés, nous allons passer un moment inoubliable. \n\nPrépare-toi pour une aventure mémorable !",
+            signature: "Chaleureusement,\nTatsuyuki"
+        },
+        jp: {
+            greeting: "アリシアへ",
+            body: "トロントへようこそ！本当に久しぶりだね。この美しい街を案内できるのが待ちきれないよ。CNタワーから隠れ家的なカフェまで、最高に楽しい時間を過ごそう。\n\n忘れられない冒険の準備はいい？",
+            signature: "心を込めて、\nタツユキ"
+        }
+    };
+
+    let currentLang = 'en';
+
+    // Sample Content (Initial)
+    let greetingText = translations[currentLang].greeting;
+    let bodyText = translations[currentLang].body;
+    let signatureText = translations[currentLang].signature;
 
     let isLetterOpen = false;
 
